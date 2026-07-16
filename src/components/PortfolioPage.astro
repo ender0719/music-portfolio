@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { PortfolioContent } from '../data/portfolio';
+interface Props { content: PortfolioContent; lang: 'zh' | 'ja'; }
+const { content: portfolio, lang } = Astro.props;
+const imageUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
+const icons = ['♬', '◎', '✈'];
+const journeyIcons = ['♪', '◫', '●', '♬', '◎', '♡'];
+---
+<BaseLayout title={portfolio.meta.title} description={portfolio.meta.description} lang={lang === 'zh' ? 'zh-Hant' : 'ja'} skipLabel={portfolio.ui.skipToContent}>
+  <Header content={portfolio} lang={lang} />
+  <main id="main-content">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <img class="hero-image" src={imageUrl(portfolio.hero.image.src)} alt={portfolio.hero.image.alt} width="1600" height="1100" fetchpriority="high" />
+      <div class="hero-shade"></div>
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <p class="kicker">{portfolio.hero.eyebrow}</p>
+          <h1 id="hero-title">{portfolio.hero.title}</h1>
+          <p>{portfolio.hero.description}</p>
+          <a class="pill light-pill" href={portfolio.hero.primaryAction.href}>{portfolio.hero.primaryAction.label}<span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="about section" id="about" aria-labelledby="about-title">
+      <div class="shell about-grid">
+        <figure class="about-photo"><img src={imageUrl(portfolio.about.image.src)} alt={portfolio.about.image.alt} width="900" height="1100" loading="lazy" decoding="async" /></figure>
+        <div class="about-copy">
+          <p class="section-tag">{portfolio.about.label}</p>
+          <h2 id="about-title">{portfolio.about.title}</h2>
+          {portfolio.about.paragraphs.map((text) => <p>{text}</p>)}
+          <a class="pill outline-pill" href="#journey">{portfolio.ui.learnStory} <span aria-hidden="true">→</span></a>
+        </div>
+        <ul class="about-points" aria-label="Focus areas">
+          {portfolio.about.facts.map((item, i) => <li><span class="line-icon" aria-hidden="true">{['♩','♧','◎'][i]}</span><div><h3>{item.value}</h3><p>{item.label}</p></div></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="services section tinted" id="services" aria-labelledby="services-title">
+      <div class="shell">
+        <p class="section-tag">{portfolio.services.label}</p>
+        <h2 id="services-title">{portfolio.services.title}</h2>
+        <p class="section-intro">{portfolio.services.intro}</p>
+        <div class="service-grid">
+          {portfolio.services.items.map((item, i) => <article class="service-card">
+            <div class="service-photo"><img src={imageUrl(portfolio.community.images[i].src)} alt="" width="900" height="650" loading="lazy" decoding="async" /><span class="icon-badge" aria-hidden="true">{icons[i]}</span></div>
+            <h3>{item.title}</h3><p>{item.description}</p><a href="#contact">{portfolio.ui.learnMore} <span aria-hidden="true">→</span></a>
+          </article>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="journey section" id="journey" aria-labelledby="journey-title">
+      <div class="shell">
+        <p class="section-tag">{portfolio.journey.label}</p><h2 id="journey-title">{portfolio.journey.title}</h2>
+        <p class="section-intro">{portfolio.journey.intro}</p>
+        <ol class="journey-line">
+          {portfolio.journey.items.map((item, i) => <li><div class="journey-mark"><span aria-hidden="true">{journeyIcons[i]}</span></div><p class="journey-year">{item.period}</p><h3>{item.title}</h3><p>{item.description}</p></li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="community section tinted" id="community" aria-labelledby="community-title">
+      <div class="shell community-grid">
+        <div class="community-copy"><p class="section-tag">{portfolio.community.label}</p><h2 id="community-title">{portfolio.community.title}</h2><p>{portfolio.community.description}</p><a class="pill outline-pill" href="#contact">{portfolio.ui.viewActivities} <span aria-hidden="true">→</span></a></div>
+        <div class="community-gallery">
+          {portfolio.community.images.map((image) => <figure><img src={imageUrl(image.src)} alt={image.alt} width="900" height="650" loading="lazy" decoding="async" /></figure>)}
+          <figure><img src={imageUrl(portfolio.about.image.src)} alt="Music community placeholder" width="900" height="650" loading="lazy" decoding="async" /></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="vision" id="vision" aria-labelledby="vision-title">
+      <img src={imageUrl(portfolio.about.image.src)} alt="" width="1600" height="600" loading="lazy" decoding="async" />
+      <div class="vision-shade"></div>
+      <div class="shell vision-copy"><p class="section-tag">{portfolio.vision.label}</p><h2 id="vision-title">{portfolio.vision.title}</h2><blockquote>{portfolio.vision.quote}</blockquote><p>{portfolio.vision.description}</p><a class="pill dark-outline" href="#contact">{portfolio.ui.learnMore} <span aria-hidden="true">→</span></a></div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="shell contact-grid">
+        <div class="contact-title"><p class="section-tag">{portfolio.ui.letsConnect}</p><h2 id="contact-title">{portfolio.contact.title}</h2></div>
+        <p class="signature" aria-hidden="true">Kai</p>
+        <div class="contact-card"><span aria-hidden="true">◌</span><div><h3>{portfolio.ui.message}</h3><p>{portfolio.ui.messageDescription}</p><a href={`mailto:${portfolio.contact.email}`}>{portfolio.ui.message} →</a></div></div>
+        <div class="contact-card"><span aria-hidden="true">▢</span><div><h3>{portfolio.ui.follow}</h3><p>{portfolio.ui.followDescription}</p><a href="#">Instagram →</a></div></div>
+        <div class="contact-card"><span aria-hidden="true">✉</span><div><h3>{portfolio.ui.collaborate}</h3><p>{portfolio.ui.collaborateDescription}</p><a href={`mailto:${portfolio.contact.email}`}>Email →</a></div></div>
+      </div>
+    </section>
+  </main>
+  <Footer content={portfolio} />
+</BaseLayout>

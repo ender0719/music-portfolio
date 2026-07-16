@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { zh } from '../data/zh';
+---
+<BaseLayout title={zh.meta.title} description={zh.meta.description} lang="zh-Hant" skipLabel={zh.ui.skipToContent}>
+  <main class="language-entry">
+    <p>正在前往網站…</p>
+    <noscript><a href={`${import.meta.env.BASE_URL}zh/`}>進入網站</a></noscript>
+  </main>
+  <script is:inline define:vars={{ base: import.meta.env.BASE_URL }}>
+    const saved = localStorage.getItem('portfolio-language');
+    const preferred = saved === 'ja' || saved === 'zh'
+      ? saved
+      : navigator.language.toLowerCase().startsWith('ja') ? 'ja' : 'zh';
+    window.location.replace(`${base}${preferred}/${window.location.hash}`);
+  </script>
+</BaseLayout>

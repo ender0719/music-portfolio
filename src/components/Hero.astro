@@ -1,0 +1,22 @@
+---
+import { portfolio } from '../data/portfolio';
+const { hero } = portfolio;
+---
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero-media">
+    <img src={`${import.meta.env.BASE_URL}${hero.image.src.slice(1)}`} alt={hero.image.alt} width="1600" height="1100" fetchpriority="high" />
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="container hero-content">
+    <p class="eyebrow light">{hero.eyebrow}</p>
+    <h1 id="hero-title">{hero.title}</h1>
+    <div class="hero-bottom">
+      <p>{hero.description}</p>
+      <div class="hero-actions">
+        <a class="button button-light" href={hero.primaryAction.href}>{hero.primaryAction.label} <span aria-hidden="true">↗</span></a>
+        <a class="text-link light" href={hero.secondaryAction.href}>{hero.secondaryAction.label} <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    <p class="hero-note">{hero.note}</p>
+  </div>
+</section>

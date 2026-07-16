@@ -1,0 +1,46 @@
+---
+import type { PortfolioContent } from '../data/portfolio';
+interface Props { content: PortfolioContent; lang: 'zh' | 'ja'; }
+const { content, lang } = Astro.props;
+---
+<header class="site-header" data-header>
+  <div class="shell header-inner">
+    <a class="wordmark" href="#top" aria-label={content.ui.backToTop}><span>Kai</span><small>Music Community Guide</small></a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span>{content.ui.menu}</span><span class="menu-icon" aria-hidden="true"></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label={content.ui.navigationLabel}>
+      {content.navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a class="nav-contact" href="#contact">{content.ui.contact} <span aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="language-switch" aria-label={content.ui.language}>
+      <a href={`${import.meta.env.BASE_URL}zh/`} data-language="zh" aria-current={lang === 'zh' ? 'page' : undefined}>繁中</a>
+      <span aria-hidden="true">/</span>
+      <a href={`${import.meta.env.BASE_URL}ja/`} data-language="ja" aria-current={lang === 'ja' ? 'page' : undefined}>日本語</a>
+    </div>
+  </div>
+</header>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.menu-button');
+  const nav = document.querySelector<HTMLElement>('#site-nav');
+  button?.addEventListener('click', () => {
+    const open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('is-open', !open);
+  });
+  nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+    button?.setAttribute('aria-expanded', 'false');
+    nav.classList.remove('is-open');
+  }));
+</script>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-language]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const language = link.dataset.language;
+      if (language) localStorage.setItem('portfolio-language', language);
+      const hash = window.location.hash;
+      window.location.href = `${link.href}${hash}`;
+    });
+  });
+</script>
