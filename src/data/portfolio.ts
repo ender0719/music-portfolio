@@ -8,10 +8,10 @@ export interface PortfolioContent {
   navigation: readonly { label: string; href: string }[];
   hero: { eyebrow: string; title: string; description: string; primaryAction: { label: string; href: string }; secondaryAction: { label: string; href: string }; image: ImageAsset; note: string };
   about: { label: string; title: string; paragraphs: readonly string[]; image: ImageAsset; facts: readonly { value: string; label: string }[] };
-  services: { label: string; title: string; intro: string; items: readonly { number: string; title: string; description: string }[] };
+  services: { label: string; title: string; intro: string; items: readonly { number: string; title: string; description: string; image: ImageAsset }[] };
   journey: { label: string; title: string; intro: string; items: readonly { period: string; title: string; description: string }[] };
   community: { label: string; title: string; description: string; images: readonly ImageAsset[] };
-  vision: { label: string; quote: string; title: string; description: string };
+  vision: { label: string; quote: string; title: string; description: string; image: ImageAsset };
   contact: { label: string; title: string; description: string; image: ImageAsset; email: string; emailLabel: string; socialLinks: readonly { label: string; href: string }[] };
   projects: { label: string; title: string; intro: string; items: readonly { title: string; description: string; tags: readonly string[]; image: ImageAsset; link?: string }[] };
   testimonials: { label: string; title: string; items: readonly { role: string; quote: string }[] };
@@ -60,9 +60,9 @@ export const portfolio = {
     title: 'Ways we can work together',
     intro: 'Flexible support for artists, communities, and cultural projects. Scope and availability are discussed case by case.',
     items: [
-      { number: '01', title: 'Music Consulting', description: 'Thoughtful support for music projects, creative direction, and cross-disciplinary ideas.' },
-      { number: '02', title: 'Community Building', description: 'Planning and facilitation for gatherings that create genuine, lasting connections.' },
-      { number: '03', title: 'Japan–Taiwan Exchange', description: 'Cultural context and project support for music initiatives connecting Japan and Taiwan.' },
+      { number: '01', title: 'Music Consulting', description: 'Thoughtful support for music projects, creative direction, and cross-disciplinary ideas.', image: { src: '/images/service-learning.webp', alt: 'Musicians learning together in a rehearsal studio' } },
+      { number: '02', title: 'Community Building', description: 'Planning and facilitation for gatherings that create genuine, lasting connections.', image: { src: '/images/service-community.webp', alt: 'A live band connecting with the audience at a music festival' } },
+      { number: '03', title: 'Japan–Taiwan Exchange', description: 'Cultural context and project support for music initiatives connecting Japan and Taiwan.', image: { src: '/images/service-japan.webp', alt: 'Friends visiting a music festival in Japan together' } },
     ],
   },
   journey: {
@@ -93,6 +93,7 @@ export const portfolio = {
     quote: 'Create more reasons for people to listen—to music, to one another, and across cultures.',
     title: 'A home for music and connection',
     description: 'The long-term vision is a durable bridge between independent music communities in Japan and Taiwan: artist-led, locally grounded, and open to unexpected collaboration.',
+    image: { src: '/images/vision-concert.webp', alt: 'A concert audience sharing the energy of a live performance' },
   },
   contact: {
     label: '06 / Contact',

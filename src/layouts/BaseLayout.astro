@@ -10,9 +10,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f2efe7" />
+    <meta name="theme-color" content="#17324d" />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}icons/favicon.svg`} type="image/svg+xml" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}icons/favicon.svg?v=2`} type="image/svg+xml" sizes="any" />
     <title>{title}</title>
   </head>
   <body>
