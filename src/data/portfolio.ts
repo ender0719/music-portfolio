@@ -6,7 +6,7 @@ export interface ImageAsset {
 export interface PortfolioContent {
   meta: { title: string; description: string };
   navigation: readonly { label: string; href: string }[];
-  hero: { eyebrow: string; title: string; description: string; primaryAction: { label: string; href: string }; secondaryAction: { label: string; href: string }; image: ImageAsset; note: string };
+  hero: { eyebrow: string; title: string; description: string; primaryAction: { label: string; href: string }; secondaryAction: { label: string; href: string }; image: ImageAsset; note: string; highlights: readonly { label: string; value: string }[] };
   about: { label: string; title: string; paragraphs: readonly string[]; image: ImageAsset; facts: readonly { value: string; label: string }[] };
   services: { label: string; title: string; intro: string; items: readonly { number: string; title: string; description: string; image: ImageAsset }[] };
   journey: { label: string; title: string; intro: string; items: readonly { period: string; title: string; description: string }[] };
@@ -40,6 +40,11 @@ export const portfolio = {
     secondaryAction: { label: 'Explore the journey', href: '#journey' },
     image: { src: '/images/hero.webp', alt: 'Abstract warm light suggesting a live music atmosphere' },
     note: 'Based in Taiwan · Connecting with Japan',
+    highlights: [
+      { label: 'By day · After work', value: 'Engineer · Band guitarist' },
+      { label: '10+ years', value: 'Performance · Creation · Exchange' },
+      { label: 'Taiwan × Japan', value: 'Music culture · Community' },
+    ],
   },
   about: {
     label: '01 / About',

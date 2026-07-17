@@ -21,6 +21,9 @@ const icons = ['♬', '◎', '✈'];
           <p>{portfolio.hero.description}</p>
           <a class="pill light-pill" href={portfolio.hero.primaryAction.href}>{portfolio.hero.primaryAction.label}<span aria-hidden="true">↓</span></a>
         </div>
+        <ul class="hero-highlights" aria-label={portfolio.hero.note}>
+          {portfolio.hero.highlights.map((item) => <li><span>{item.label}</span><strong>{item.value}</strong></li>)}
+        </ul>
       </div>
     </section>
 
@@ -89,9 +92,9 @@ const icons = ['♬', '◎', '✈'];
       <div class="shell contact-grid">
         <div class="contact-title"><p class="section-tag">{portfolio.ui.letsConnect}</p><h2 id="contact-title">{portfolio.contact.title}</h2></div>
         <p class="signature" aria-hidden="true">Kai</p>
-        <div class="contact-card"><span aria-hidden="true">◌</span><div><h3>{portfolio.ui.message}</h3><p>{portfolio.ui.messageDescription}</p><a href={`mailto:${portfolio.contact.email}`}>{portfolio.ui.message} →</a></div></div>
-        <div class="contact-card"><span aria-hidden="true">▢</span><div><h3>{portfolio.ui.follow}</h3><p>{portfolio.ui.followDescription}</p><a href={portfolio.contact.socialLinks[0].href} target="_blank" rel="noreferrer">Instagram →</a></div></div>
-        <div class="contact-card"><span aria-hidden="true">✉</span><div><h3>{portfolio.ui.collaborate}</h3><p>{portfolio.ui.collaborateDescription}</p><a href={`mailto:${portfolio.contact.email}`}>Email →</a></div></div>
+        <div class="contact-card"><span aria-hidden="true">01</span><div><h3>{portfolio.ui.message}</h3><p>{portfolio.ui.messageDescription}</p><a href={`mailto:${portfolio.contact.email}`}>{portfolio.ui.message} →</a></div></div>
+        <div class="contact-card"><span aria-hidden="true">02</span><div><h3>{portfolio.ui.follow}</h3><p>{portfolio.ui.followDescription}</p><a href={portfolio.contact.socialLinks[0].href} target="_blank" rel="noreferrer">Instagram →</a></div></div>
+        <div class="contact-card"><span aria-hidden="true">03</span><div><h3>{portfolio.ui.collaborate}</h3><p>{portfolio.ui.collaborateDescription}</p><a href={`mailto:${portfolio.contact.email}`}>Email →</a></div></div>
       </div>
     </section>
   </main>
