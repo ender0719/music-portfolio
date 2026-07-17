@@ -7,7 +7,6 @@ interface Props { content: PortfolioContent; lang: 'zh' | 'ja'; }
 const { content: portfolio, lang } = Astro.props;
 const imageUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
 const icons = ['♬', '◎', '✈'];
-const journeyIcons = ['♪', '◫', '●', '♬', '◎', '♡'];
 ---
 <BaseLayout title={portfolio.meta.title} description={portfolio.meta.description} lang={lang === 'zh' ? 'zh-Hant' : 'ja'} skipLabel={portfolio.ui.skipToContent}>
   <Header content={portfolio} lang={lang} />
@@ -32,7 +31,7 @@ const journeyIcons = ['♪', '◫', '●', '♬', '◎', '♡'];
           <p class="section-tag">{portfolio.about.label}</p>
           <h2 id="about-title">{portfolio.about.title}</h2>
           {portfolio.about.paragraphs.map((text) => <p>{text}</p>)}
-          <a class="pill outline-pill" href="#journey">{portfolio.ui.learnStory} <span aria-hidden="true">→</span></a>
+          <a class="pill outline-pill" href="#portfolio">{portfolio.ui.learnStory} <span aria-hidden="true">→</span></a>
         </div>
         <ul class="about-points" aria-label="Focus areas">
           {portfolio.about.facts.map((item, i) => <li><span class="line-icon" aria-hidden="true">{['♩','♧','◎'][i]}</span><div><h3>{item.value}</h3><p>{item.label}</p></div></li>)}
@@ -40,11 +39,21 @@ const journeyIcons = ['♪', '◫', '●', '♬', '◎', '♡'];
       </div>
     </section>
 
-    <section class="services section tinted" id="services" aria-labelledby="services-title">
+    <section class="projects section tinted" id="portfolio" aria-labelledby="projects-title">
       <div class="shell">
-        <p class="section-tag">{portfolio.services.label}</p>
-        <h2 id="services-title">{portfolio.services.title}</h2>
-        <p class="section-intro">{portfolio.services.intro}</p>
+        <div class="section-heading-row"><div><p class="section-tag">{portfolio.projects.label}</p><h2 id="projects-title">{portfolio.projects.title}</h2></div><p>{portfolio.projects.intro}</p></div>
+        <div class="project-grid">
+          {portfolio.projects.items.map((item, i) => <article class={`project-card project-${i + 1}`}>
+            <div class="project-image"><img src={imageUrl(i === 5 ? portfolio.about.image.src : portfolio.community.images[i % portfolio.community.images.length].src)} alt="" width="900" height="650" loading="lazy" decoding="async" /><span>0{i + 1}</span></div>
+            <div class="project-body"><div class="project-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div><h3>{item.title}</h3><p>{item.description}</p>{item.link && <a href={item.link} target="_blank" rel="noreferrer">{portfolio.ui.learnMore} ↗</a>}</div>
+          </article>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="services section" id="services" aria-labelledby="services-title">
+      <div class="shell">
+        <p class="section-tag">{portfolio.services.label}</p><h2 id="services-title">{portfolio.services.title}</h2><p class="section-intro">{portfolio.services.intro}</p>
         <div class="service-grid">
           {portfolio.services.items.map((item, i) => <article class="service-card">
             <div class="service-photo"><img src={imageUrl(portfolio.community.images[i].src)} alt="" width="900" height="650" loading="lazy" decoding="async" /><span class="icon-badge" aria-hidden="true">{icons[i]}</span></div>
@@ -54,23 +63,17 @@ const journeyIcons = ['♪', '◫', '●', '♬', '◎', '♡'];
       </div>
     </section>
 
-    <section class="journey section" id="journey" aria-labelledby="journey-title">
+    <section class="testimonials section tinted" id="testimonials" aria-labelledby="testimonials-title">
       <div class="shell">
-        <p class="section-tag">{portfolio.journey.label}</p><h2 id="journey-title">{portfolio.journey.title}</h2>
-        <p class="section-intro">{portfolio.journey.intro}</p>
-        <ol class="journey-line">
-          {portfolio.journey.items.map((item, i) => <li><div class="journey-mark"><span aria-hidden="true">{journeyIcons[i]}</span></div><p class="journey-year">{item.period}</p><h3>{item.title}</h3><p>{item.description}</p></li>)}
-        </ol>
+        <p class="section-tag">{portfolio.testimonials.label}</p><h2 id="testimonials-title">{portfolio.testimonials.title}</h2>
+        <div class="quote-grid">{portfolio.testimonials.items.map((item) => <figure><blockquote>「{item.quote}」</blockquote><figcaption>{item.role}</figcaption></figure>)}</div>
       </div>
     </section>
 
-    <section class="community section tinted" id="community" aria-labelledby="community-title">
-      <div class="shell community-grid">
-        <div class="community-copy"><p class="section-tag">{portfolio.community.label}</p><h2 id="community-title">{portfolio.community.title}</h2><p>{portfolio.community.description}</p><a class="pill outline-pill" href="#contact">{portfolio.ui.viewActivities} <span aria-hidden="true">→</span></a></div>
-        <div class="community-gallery">
-          {portfolio.community.images.map((image) => <figure><img src={imageUrl(image.src)} alt={image.alt} width="900" height="650" loading="lazy" decoding="async" /></figure>)}
-          <figure><img src={imageUrl(portfolio.about.image.src)} alt="Music community placeholder" width="900" height="650" loading="lazy" decoding="async" /></figure>
-        </div>
+    <section class="process section" id="process" aria-labelledby="process-title">
+      <div class="shell">
+        <p class="section-tag">{portfolio.process.label}</p><h2 id="process-title">{portfolio.process.title}</h2>
+        <ol class="process-list">{portfolio.process.items.map((item, i) => <li><span>0{i + 1}</span><div><h3>{item.title}</h3><p>{item.description}</p></div></li>)}</ol>
       </div>
     </section>
 
@@ -85,7 +88,7 @@ const journeyIcons = ['♪', '◫', '●', '♬', '◎', '♡'];
         <div class="contact-title"><p class="section-tag">{portfolio.ui.letsConnect}</p><h2 id="contact-title">{portfolio.contact.title}</h2></div>
         <p class="signature" aria-hidden="true">Kai</p>
         <div class="contact-card"><span aria-hidden="true">◌</span><div><h3>{portfolio.ui.message}</h3><p>{portfolio.ui.messageDescription}</p><a href={`mailto:${portfolio.contact.email}`}>{portfolio.ui.message} →</a></div></div>
-        <div class="contact-card"><span aria-hidden="true">▢</span><div><h3>{portfolio.ui.follow}</h3><p>{portfolio.ui.followDescription}</p><a href="#">Instagram →</a></div></div>
+        <div class="contact-card"><span aria-hidden="true">▢</span><div><h3>{portfolio.ui.follow}</h3><p>{portfolio.ui.followDescription}</p><a href={portfolio.contact.socialLinks[0].href} target="_blank" rel="noreferrer">Instagram →</a></div></div>
         <div class="contact-card"><span aria-hidden="true">✉</span><div><h3>{portfolio.ui.collaborate}</h3><p>{portfolio.ui.collaborateDescription}</p><a href={`mailto:${portfolio.contact.email}`}>Email →</a></div></div>
       </div>
     </section>

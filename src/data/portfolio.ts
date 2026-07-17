@@ -13,6 +13,9 @@ export interface PortfolioContent {
   community: { label: string; title: string; description: string; images: readonly ImageAsset[] };
   vision: { label: string; quote: string; title: string; description: string };
   contact: { label: string; title: string; description: string; email: string; emailLabel: string; socialLinks: readonly { label: string; href: string }[] };
+  projects: { label: string; title: string; intro: string; items: readonly { title: string; description: string; tags: readonly string[]; link?: string }[] };
+  testimonials: { label: string; title: string; items: readonly { role: string; quote: string }[] };
+  process: { label: string; title: string; items: readonly { title: string; description: string }[] };
   footer: { name: string; tagline: string };
   ui: { menu: string; navigationLabel: string; backToTop: string; contact: string; learnStory: string; learnMore: string; viewActivities: string; letsConnect: string; message: string; messageDescription: string; follow: string; followDescription: string; collaborate: string; collaborateDescription: string; skipToContent: string; language: string };
 }
@@ -110,4 +113,4 @@ export const portfolio = {
   ui: {
     menu: 'Menu', navigationLabel: 'Main navigation', backToTop: 'Kai, back to top', contact: 'Contact', learnStory: 'Learn the story', learnMore: 'Learn more', viewActivities: 'View activities', letsConnect: "Let's connect", message: 'Message', messageDescription: 'Reach out and start a conversation', follow: 'Follow', followDescription: 'News and everyday music notes', collaborate: 'Collaborate', collaborateDescription: 'Projects and partnership enquiries', skipToContent: 'Skip to content', language: 'Language',
   },
-} as const satisfies PortfolioContent;
+} as const;
