@@ -12,10 +12,10 @@ export interface PortfolioContent {
   journey: { label: string; title: string; intro: string; items: readonly { period: string; title: string; description: string }[] };
   community: { label: string; title: string; description: string; images: readonly ImageAsset[] };
   vision: { label: string; quote: string; title: string; description: string };
-  contact: { label: string; title: string; description: string; email: string; emailLabel: string; socialLinks: readonly { label: string; href: string }[] };
-  projects: { label: string; title: string; intro: string; items: readonly { title: string; description: string; tags: readonly string[]; link?: string }[] };
+  contact: { label: string; title: string; description: string; image: ImageAsset; email: string; emailLabel: string; socialLinks: readonly { label: string; href: string }[] };
+  projects: { label: string; title: string; intro: string; items: readonly { title: string; description: string; tags: readonly string[]; image: ImageAsset; link?: string }[] };
   testimonials: { label: string; title: string; items: readonly { role: string; quote: string }[] };
-  process: { label: string; title: string; items: readonly { title: string; description: string }[] };
+  process: { label: string; title: string; image: ImageAsset; items: readonly { title: string; description: string }[] };
   footer: { name: string; tagline: string };
   ui: { menu: string; navigationLabel: string; backToTop: string; contact: string; learnStory: string; learnMore: string; viewActivities: string; letsConnect: string; message: string; messageDescription: string; follow: string; followDescription: string; collaborate: string; collaborateDescription: string; skipToContent: string; language: string };
 }
