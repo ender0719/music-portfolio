@@ -7,7 +7,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="shell footer-inner">
     <p class="footer-mark">{content.footer.name}</p>
-    <p>{content.footer.tagline}</p>
-    <p>© {year} {content.footer.name}</p>
+    <blockquote>{content.footer.quote}</blockquote>
+    <div><p>{content.footer.lastUpdated}</p><p>© {year} {content.footer.name}</p></div>
   </div>
 </footer>

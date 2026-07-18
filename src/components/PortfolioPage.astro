@@ -52,6 +52,7 @@ const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
           <p class="section-tag">{portfolio.about.label}</p>
           <h2 id="about-title">{portfolio.about.title}</h2>
           {portfolio.about.paragraphs.map((text) => <p>{text}</p>)}
+          <blockquote class="about-story">{portfolio.about.story}</blockquote>
           <a class="pill outline-pill" href="#portfolio">{portfolio.ui.learnStory} <span aria-hidden="true">→</span></a>
         </div>
         <ul class="about-points" aria-label="Focus areas">
@@ -60,7 +61,12 @@ const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
         <div class="about-values">
           {portfolio.values.items.map((item) => <article><h3>{item.title}</h3><p>{item.description}</p></article>)}
         </div>
+        <ol class="about-timeline">{portfolio.about.timeline.map((item) => <li><span>{item.label}</span><h3>{item.title}</h3><p>{item.description}</p></li>)}</ol>
       </div>
+    </section>
+
+    <section class="currently section tinted" id="currently" aria-labelledby="currently-title">
+      <div class="shell currently-layout"><div><p class="section-tag">{portfolio.currently.label}</p><h2 id="currently-title">{portfolio.currently.title}</h2><p>{portfolio.currently.intro}</p></div><div class="currently-list">{portfolio.currently.items.map((item) => <article><span>{item.status}</span><h3>{item.title}</h3><p>{item.description}</p></article>)}</div></div>
     </section>
 
     <section class="services section" id="services" aria-labelledby="services-title">
@@ -99,11 +105,14 @@ const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
       </div>
     </section>
 
+    {portfolio.journal.enabled && <section class="journal-preview section tinted" aria-labelledby="journal-title"><div class="shell"><div class="section-heading-simple"><p class="section-tag">{portfolio.journal.label}</p><h2 id="journal-title">{portfolio.journal.title}</h2></div><div class="journal-grid">{portfolio.journal.items.map((item) => <article><div class="journal-image"><img src={imageUrl(item.image.src)} alt={item.image.alt} width="900" height="600" loading="lazy" decoding="async" /></div><div class="journal-body"><div><span>{item.category}</span><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.excerpt}</p></div></article>)}</div></div></section>}
+
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div class="contact-visual"><img src={imageUrl(portfolio.contact.image.src)} alt={portfolio.contact.image.alt} width="1829" height="864" loading="lazy" decoding="async" /></div>
       <div class="shell contact-form-grid">
         <div class="contact-title"><p class="section-tag">{portfolio.contact.label}</p><h2 id="contact-title">{portfolio.contact.title}</h2></div>
         <form class="contact-form" id="contact-form" data-email={portfolio.contact.email} data-subject={portfolio.contact.form.subject}>
+          <p class="contact-encouragement">{portfolio.contact.encouragement}</p>
           <label>{portfolio.contact.form.name}<input name="name" autocomplete="name" required /></label>
           <label>{portfolio.contact.form.email}<input name="email" type="email" autocomplete="email" required /></label>
           <label class="form-wide">{portfolio.contact.form.topic}<input name="topic" required /></label>
