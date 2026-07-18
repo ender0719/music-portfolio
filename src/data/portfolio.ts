@@ -7,17 +7,20 @@ export interface PortfolioContent {
   meta: { title: string; description: string };
   navigation: readonly { label: string; href: string }[];
   hero: { eyebrow: string; title: string; description: string; primaryAction: { label: string; href: string }; secondaryAction: { label: string; href: string }; image: ImageAsset; note: string; highlights: readonly { label: string; value: string }[] };
+  startHere: { label: string; title: string; intro: string; items: readonly { number: string; title: string; description: string; action: { label: string; href: string } }[] };
   about: { label: string; title: string; paragraphs: readonly string[]; image: ImageAsset; facts: readonly { value: string; label: string }[] };
-  services: { label: string; title: string; intro: string; items: readonly { number: string; title: string; description: string; image: ImageAsset }[] };
+  values: { label: string; title: string; intro: string; items: readonly { number: string; title: string; description: string }[] };
+  services: { label: string; title: string; intro: string; items: readonly { number: string; title: string; description: string; audience: string; action: { label: string; href: string }; image: ImageAsset }[] };
   journey: { label: string; title: string; intro: string; items: readonly { period: string; title: string; description: string }[] };
   community: { label: string; title: string; description: string; images: readonly ImageAsset[] };
   vision: { label: string; quote: string; title: string; description: string; image: ImageAsset };
-  contact: { label: string; title: string; description: string; image: ImageAsset; email: string; emailLabel: string; socialLinks: readonly { label: string; href: string }[] };
-  projects: { label: string; title: string; intro: string; items: readonly { title: string; description: string; tags: readonly string[]; image: ImageAsset; link?: string }[] };
+  contact: { label: string; title: string; description: string; primaryAction: string; secondaryAction: string; image: ImageAsset; email: string; emailLabel: string; socialLinks: readonly { label: string; href: string }[] };
+  projects: { label: string; title: string; intro: string; items: readonly { title: string; description: string; role: string; insight: string; tags: readonly string[]; image: ImageAsset; link?: string }[] };
+  journal: { enabled: boolean; label: string; title: string; items: readonly { category: string; title: string; excerpt: string; date: string; href: string; image: ImageAsset }[] };
   testimonials: { label: string; title: string; items: readonly { role: string; quote: string }[] };
   process: { label: string; title: string; image: ImageAsset; items: readonly { title: string; description: string }[] };
   footer: { name: string; tagline: string };
-  ui: { menu: string; navigationLabel: string; backToTop: string; contact: string; learnStory: string; learnMore: string; viewActivities: string; letsConnect: string; message: string; messageDescription: string; follow: string; followDescription: string; collaborate: string; collaborateDescription: string; skipToContent: string; language: string };
+  ui: { menu: string; navigationLabel: string; backToTop: string; contact: string; learnStory: string; learnMore: string; viewActivities: string; suitableFor: string; role: string; takeaway: string; letsConnect: string; message: string; messageDescription: string; follow: string; followDescription: string; collaborate: string; collaborateDescription: string; skipToContent: string; language: string };
 }
 
 export const portfolio = {
