@@ -5,7 +5,8 @@ import Footer from '../components/Footer.astro';
 import type { PortfolioContent } from '../data/portfolio';
 interface Props { content: PortfolioContent; lang: 'zh' | 'ja'; }
 const { content: portfolio, lang } = Astro.props;
-const imageUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
+const assetVersion = import.meta.env.PUBLIC_ASSET_VERSION || 'local';
+const imageUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}?v=${assetVersion}`;
 ---
 <BaseLayout title={portfolio.meta.title} description={portfolio.meta.description} lang={lang === 'zh' ? 'zh-Hant' : 'ja'} skipLabel={portfolio.ui.skipToContent}>
   <Header content={portfolio} lang={lang} />

@@ -27,6 +27,7 @@ jobs:
       - run: npm run build
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
+          PUBLIC_ASSET_VERSION: ${{ github.sha }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

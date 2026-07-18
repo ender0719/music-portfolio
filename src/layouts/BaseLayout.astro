@@ -7,6 +7,8 @@ const base = import.meta.env.BASE_URL;
 const zhURL = new URL(`${base}zh/`, Astro.site);
 const jaURL = new URL(`${base}ja/`, Astro.site);
 const shareImage = new URL(`${base}images/hero.webp`, Astro.site);
+const assetVersion = import.meta.env.PUBLIC_ASSET_VERSION || 'local';
+shareImage.searchParams.set('v', assetVersion);
 ---
 <!doctype html>
 <html lang={lang}>
@@ -15,6 +17,9 @@ const shareImage = new URL(`${base}images/hero.webp`, Astro.site);
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#17324d" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="zh-Hant" href={zhURL} />
     <link rel="alternate" hreflang="ja" href={jaURL} />
@@ -26,8 +31,20 @@ const shareImage = new URL(`${base}images/hero.webp`, Astro.site);
     <meta property="og:image" content={shareImage} />
     <meta property="og:locale" content={lang === 'zh-Hant' ? 'zh_TW' : 'ja_JP'} />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}icons/favicon.svg?v=2`} type="image/svg+xml" sizes="any" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}icons/favicon.svg?v=${assetVersion}`} type="image/svg+xml" sizes="any" />
     <title>{title}</title>
+    <script is:inline define:vars={{ base, assetVersion }}>
+      fetch(`${base}version.json?t=${Date.now()}`, { cache: 'no-store' })
+        .then((response) => response.ok ? response.json() : null)
+        .then((latest) => {
+          if (!latest?.version || latest.version === assetVersion || assetVersion === 'local') return;
+          const url = new URL(window.location.href);
+          if (url.searchParams.get('v') === latest.version) return;
+          url.searchParams.set('v', latest.version);
+          window.location.replace(url.toString());
+        })
+        .catch(() => {});
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">{skipLabel}</a>
