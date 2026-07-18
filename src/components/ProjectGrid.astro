@@ -1,0 +1,13 @@
+---
+import type { PortfolioContent } from '../data/portfolio';
+interface Props { items: PortfolioContent['projects']['items']; content: PortfolioContent; }
+const { items, content } = Astro.props;
+const assetVersion = import.meta.env.PUBLIC_ASSET_VERSION || 'local';
+const imageUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}?v=${assetVersion}`;
+---
+<div class="project-grid">
+  {items.map((item, i) => <article class={`project-card project-${i + 1}`}>
+    <div class="project-image"><img src={imageUrl(item.image.src)} alt={item.image.alt} width="1024" height="768" loading="lazy" decoding="async" /><span>{String(i + 1).padStart(2, '0')}</span></div>
+    <div class="project-body"><div class="project-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div><h3>{item.title}</h3><p>{item.description}</p><dl class="project-details"><div><dt>{content.ui.role}</dt><dd>{item.role}</dd></div><div><dt>{content.ui.takeaway}</dt><dd>{item.insight}</dd></div></dl>{item.link && <a href={item.link} target="_blank" rel="noreferrer">{content.ui.learnMore} ↗</a>}</div>
+  </article>)}
+</div>

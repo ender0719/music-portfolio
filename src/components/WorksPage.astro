@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import ProjectGrid from './ProjectGrid.astro';
+import type { PortfolioContent } from '../data/portfolio';
+interface Props { content: PortfolioContent; lang: 'zh' | 'ja'; }
+const { content, lang } = Astro.props;
+const homeHref = `${import.meta.env.BASE_URL}${lang}/`;
+---
+<BaseLayout title={`${content.projects.title}｜${content.footer.name}`} description={content.projects.intro} lang={lang === 'zh' ? 'zh-Hant' : 'ja'} skipLabel={content.ui.skipToContent}>
+  <Header content={content} lang={lang} subpage="works" />
+  <main id="main-content" class="works-page">
+    <section class="works-hero"><div class="shell"><p class="section-tag">{content.projects.label}</p><h1>{content.projects.title}</h1><p>{content.projects.intro}</p><a href={homeHref}>← {content.ui.backToTop}</a></div></section>
+    <section class="projects section tinted"><div class="shell"><ProjectGrid items={content.projects.items} content={content} /></div></section>
+  </main>
+  <Footer content={content} />
+</BaseLayout>
