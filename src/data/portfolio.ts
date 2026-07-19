@@ -3,6 +3,38 @@ export interface ImageAsset {
   alt: string;
 }
 
+export interface ProjectExploration {
+  label: string;
+  date: string;
+  title: string;
+  type: string;
+  description?: string;
+  videoUrl: string | null;
+  posterUrl: string | null;
+  detailUrl: string | null;
+  videoAction: string;
+  closeAction: string;
+}
+
+export interface ProjectItem {
+  title: string;
+  description: string;
+  role: string;
+  insight: string;
+  tags: readonly string[];
+  image: ImageAsset;
+  link?: string;
+  status?: string;
+  latestExploration?: ProjectExploration;
+  homepageFeature?: {
+    status: string;
+    description: string;
+    role: string;
+    insight: string;
+    latestExploration: ProjectExploration;
+  };
+}
+
 export interface PortfolioContent {
   meta: { title: string; description: string };
   navigation: readonly { label: string; href: string }[];
@@ -16,7 +48,7 @@ export interface PortfolioContent {
   community: { label: string; title: string; description: string; images: readonly ImageAsset[] };
   vision: { label: string; quote: string; title: string; description: string; image: ImageAsset };
   contact: { label: string; title: string; description: string; encouragement: string; primaryAction: string; secondaryAction: string; image: ImageAsset; email: string; emailLabel: string; form: { name: string; email: string; topic: string; message: string; submit: string; subject: string }; socialLinks: readonly { label: string; href: string }[] };
-  projects: { label: string; title: string; intro: string; allAction: string; items: readonly { title: string; description: string; role: string; insight: string; tags: readonly string[]; image: ImageAsset; link?: string }[] };
+  projects: { label: string; title: string; intro: string; allAction: string; items: readonly ProjectItem[] };
   journal: { enabled: boolean; label: string; title: string; items: readonly { category: string; title: string; excerpt: string; date: string; href: string; image: ImageAsset }[] };
   testimonials: { label: string; title: string; items: readonly { role: string; quote: string }[] };
   process: { label: string; title: string; note: string; image: ImageAsset; items: readonly { title: string; description: string }[] };

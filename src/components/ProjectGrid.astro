@@ -1,13 +1,91 @@
 ---
 import type { PortfolioContent } from '../data/portfolio';
-interface Props { items: PortfolioContent['projects']['items']; content: PortfolioContent; }
-const { items, content } = Astro.props;
+interface Props {
+  items: PortfolioContent['projects']['items'];
+  content: PortfolioContent;
+  showLatestExploration?: boolean;
+}
+const { items, content, showLatestExploration = false } = Astro.props;
 const assetVersion = import.meta.env.PUBLIC_ASSET_VERSION || 'local';
 const imageUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}?v=${assetVersion}`;
+const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
 ---
 <div class="project-grid">
-  {items.map((item, i) => <article class={`project-card project-${i + 1}`}>
-    <div class="project-image"><img src={imageUrl(item.image.src)} alt={item.image.alt} width="1024" height="768" loading="lazy" decoding="async" /><span>{String(i + 1).padStart(2, '0')}</span></div>
-    <div class="project-body"><div class="project-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div><h3>{item.title}</h3><p>{item.description}</p><dl class="project-details"><div><dt>{content.ui.role}</dt><dd>{item.role}</dd></div><div><dt>{content.ui.takeaway}</dt><dd>{item.insight}</dd></div></dl>{item.link && <a href={item.link} target="_blank" rel="noreferrer">{content.ui.learnMore} ↗</a>}</div>
-  </article>)}
+  {items.map((item, i) => {
+    const latest = showLatestExploration ? item.latestExploration : undefined;
+    const dialogId = `project-video-${i + 1}`;
+
+    return <article class={`project-card project-${i + 1}${latest ? ' has-latest' : ''}`}>
+      <div class="project-image">
+        <img src={imageUrl(item.image.src)} alt={item.image.alt} width="1024" height="768" loading="lazy" decoding="async" />
+        <span>{String(i + 1).padStart(2, '0')}</span>
+      </div>
+      <div class="project-body">
+        <div class="project-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div>
+        <div class="project-title-row">
+          <h3>{item.title}</h3>
+          {latest && item.status && <span class="project-status">{item.status}</span>}
+        </div>
+        <p>{item.description}</p>
+        <dl class="project-details">
+          <div><dt>{content.ui.role}</dt><dd>{item.role}</dd></div>
+          <div><dt>{content.ui.takeaway}</dt><dd>{item.insight}</dd></div>
+        </dl>
+        {latest && <div class="project-latest">
+          <p class="project-latest-label">{latest.label}</p>
+          <div class="project-latest-summary">
+            <div>
+              <time datetime={latest.date.replace('.', '-')}>{latest.date}</time>
+              <h4>{latest.title}</h4>
+            </div>
+            {latest.videoUrl && <button type="button" data-video-open={dialogId} aria-label={`${latest.videoAction}：${latest.title}`}>{latest.videoAction} <span aria-hidden="true">→</span></button>}
+          </div>
+        </div>}
+        {item.link && <a href={item.link} target="_blank" rel="noreferrer">{content.ui.learnMore} ↗</a>}
+      </div>
+      {latest?.videoUrl && <dialog class="video-dialog" id={dialogId} data-video-dialog aria-labelledby={`${dialogId}-title`}>
+        <div class="video-dialog-panel">
+          <div class="video-dialog-header">
+            <div><span>{latest.date}</span><h3 id={`${dialogId}-title`}>{latest.title}</h3></div>
+            <button type="button" data-video-close aria-label={latest.closeAction}>×</button>
+          </div>
+          <video controls playsinline preload="metadata" data-src={publicUrl(latest.videoUrl)} poster={latest.posterUrl ? imageUrl(latest.posterUrl) : undefined}></video>
+        </div>
+      </dialog>}
+    </article>;
+  })}
 </div>
+
+<script>
+  document.querySelectorAll<HTMLDialogElement>('[data-video-dialog]').forEach((dialog) => {
+    const video = dialog.querySelector<HTMLVideoElement>('video');
+    const openButton = document.querySelector<HTMLButtonElement>(`[data-video-open="${dialog.id}"]`);
+    const closeButton = dialog.querySelector<HTMLButtonElement>('[data-video-close]');
+
+    const closeDialog = () => dialog.close();
+
+    openButton?.addEventListener('click', () => {
+      if (video && !video.src && video.dataset.src) {
+        video.src = video.dataset.src;
+        video.load();
+      }
+      dialog.showModal();
+      video?.play().catch(() => undefined);
+    });
+
+    closeButton?.addEventListener('click', closeDialog);
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) closeDialog();
+    });
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeDialog();
+      }
+    });
+    dialog.addEventListener('close', () => {
+      video?.pause();
+      openButton?.focus();
+    });
+  });
+</script>
