@@ -14,6 +14,8 @@ const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
   {items.map((item, i) => {
     const latest = showLatestExploration ? item.latestExploration : undefined;
     const dialogId = `project-video-${i + 1}`;
+    const orientationHint = latest?.orientation ? ` is-${latest.orientation}` : '';
+    const dialogStyle = latest?.aspectRatio ? `--video-aspect-ratio:${latest.aspectRatio}` : undefined;
 
     return <article class={`project-card project-${i + 1}${latest ? ' has-latest' : ''}`}>
       <div class="project-image">
@@ -43,13 +45,16 @@ const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
         </div>}
         {item.link && <a href={item.link} target="_blank" rel="noreferrer">{content.ui.learnMore} ↗</a>}
       </div>
-      {latest?.videoUrl && <dialog class="video-dialog" id={dialogId} data-video-dialog aria-labelledby={`${dialogId}-title`}>
+      {latest?.videoUrl && <dialog class={`video-dialog is-loading${orientationHint}`} id={dialogId} data-video-dialog data-orientation-hint={latest.orientation} style={dialogStyle} role="dialog" aria-modal="true" aria-labelledby={`${dialogId}-title`} tabindex="-1">
         <div class="video-dialog-panel">
           <div class="video-dialog-header">
             <div><span>{latest.date}</span><h3 id={`${dialogId}-title`}>{latest.title}</h3></div>
             <button type="button" data-video-close aria-label={latest.closeAction}>×</button>
           </div>
-          <video controls playsinline preload="metadata" data-src={publicUrl(latest.videoUrl)} poster={latest.posterUrl ? imageUrl(latest.posterUrl) : undefined}></video>
+          <div class="video-stage">
+            <p class="video-loading" role="status" aria-live="polite">{latest.loadingLabel}</p>
+            <video controls playsinline preload="metadata" data-src={publicUrl(latest.videoUrl)} poster={latest.posterUrl ? imageUrl(latest.posterUrl) : undefined} tabindex="-1"></video>
+          </div>
         </div>
       </dialog>}
     </article>;
@@ -57,12 +62,38 @@ const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
 </div>
 
 <script>
+  type VideoOrientation = 'portrait' | 'square' | 'landscape';
+
+  const classifyVideoOrientation = (ratio: number): VideoOrientation => {
+    if (ratio < 0.9) return 'portrait';
+    if (ratio <= 1.1) return 'square';
+    return 'landscape';
+  };
+
   document.querySelectorAll<HTMLDialogElement>('[data-video-dialog]').forEach((dialog) => {
     const video = dialog.querySelector<HTMLVideoElement>('video');
     const openButton = document.querySelector<HTMLButtonElement>(`[data-video-open="${dialog.id}"]`);
     const closeButton = dialog.querySelector<HTMLButtonElement>('[data-video-close]');
+    const loading = dialog.querySelector<HTMLElement>('.video-loading');
 
-    const closeDialog = () => dialog.close();
+    const applyVideoMetadata = () => {
+      if (!video?.videoWidth || !video.videoHeight) return;
+
+      const ratio = video.videoWidth / video.videoHeight;
+      const orientation = classifyVideoOrientation(ratio);
+      dialog.classList.remove('is-loading', 'is-portrait', 'is-square', 'is-landscape');
+      dialog.classList.add(`is-${orientation}`);
+      dialog.dataset.videoOrientation = orientation;
+      dialog.style.setProperty('--video-aspect-ratio', `${video.videoWidth} / ${video.videoHeight}`);
+      video.tabIndex = 0;
+      if (loading) loading.hidden = true;
+    };
+
+    const closeDialog = () => {
+      if (dialog.open) dialog.close();
+    };
+
+    video?.addEventListener('loadedmetadata', applyVideoMetadata);
 
     openButton?.addEventListener('click', () => {
       if (video && !video.src && video.dataset.src) {
@@ -70,7 +101,8 @@ const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
         video.load();
       }
       dialog.showModal();
-      video?.play().catch(() => undefined);
+      closeButton?.focus();
+      if (video && video.readyState >= HTMLMediaElement.HAVE_METADATA) applyVideoMetadata();
     });
 
     closeButton?.addEventListener('click', closeDialog);
@@ -81,7 +113,26 @@ const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
       if (event.key === 'Escape') {
         event.preventDefault();
         closeDialog();
+        return;
       }
+
+      if (event.key === 'Tab') {
+        const focusable = [closeButton, video].filter((element): element is HTMLButtonElement | HTMLVideoElement => Boolean(element && element.tabIndex >= 0));
+        if (!focusable.length) return;
+
+        const first = focusable[0]!;
+        const last = focusable[focusable.length - 1]!;
+        const currentIndex = focusable.indexOf(document.activeElement as HTMLButtonElement | HTMLVideoElement);
+        const next = event.shiftKey
+          ? (currentIndex <= 0 ? last : focusable[currentIndex - 1]!)
+          : (currentIndex < 0 || currentIndex === focusable.length - 1 ? first : focusable[currentIndex + 1]!);
+        event.preventDefault();
+        next.focus();
+      }
+    });
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closeDialog();
     });
     dialog.addEventListener('close', () => {
       video?.pause();

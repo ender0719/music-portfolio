@@ -14,6 +14,9 @@ export interface ProjectExploration {
   detailUrl: string | null;
   videoAction: string;
   closeAction: string;
+  loadingLabel: string;
+  aspectRatio?: number;
+  orientation?: 'portrait' | 'landscape' | 'square';
 }
 
 export interface ProjectItem {
