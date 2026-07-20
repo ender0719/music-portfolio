@@ -3,24 +3,38 @@ export interface ImageAsset {
   alt: string;
 }
 
-export interface ProjectExploration {
+export interface VlogExtensionRecord {
+  type: 'vlog';
   label: string;
   date: string;
   title: string;
-  type: string;
-  description?: string;
-  videoUrl: string | null;
+  meta?: string;
+  status: 'published' | 'in-progress';
+  mediaUrl?: string;
   posterUrl: string | null;
-  detailUrl: string | null;
-  videoAction: string;
+  ctaLabel: string;
   closeAction: string;
   loadingLabel: string;
   aspectRatio?: number;
   orientation?: 'portrait' | 'landscape' | 'square';
 }
 
+export interface SocialExtensionRecord {
+  type: 'social';
+  label: string;
+  platform: 'Instagram';
+  statusText: string;
+  ctaLabel: string;
+  href: string;
+  externalLabel: string;
+}
+
+export type ExtensionRecord = VlogExtensionRecord | SocialExtensionRecord;
+
 export interface ProjectItem {
   title: string;
+  subtitle?: string;
+  icon?: 'compass';
   description: string;
   role: string;
   insight: string;
@@ -28,13 +42,17 @@ export interface ProjectItem {
   image: ImageAsset;
   link?: string;
   status?: string;
-  latestExploration?: ProjectExploration;
+  extensionRecord?: ExtensionRecord;
   homepageFeature?: {
+    title?: string;
+    subtitle?: string;
+    icon?: 'compass';
+    tags?: readonly string[];
     status: string;
     description: string;
     role: string;
     insight: string;
-    latestExploration: ProjectExploration;
+    extensionRecord: ExtensionRecord;
   };
 }
 

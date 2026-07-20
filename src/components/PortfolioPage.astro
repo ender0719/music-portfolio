@@ -88,7 +88,7 @@ const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
     <section class="projects section tinted" id="portfolio" aria-labelledby="projects-title">
       <div class="shell">
         <div class="section-heading-simple"><p class="section-tag">{portfolio.projects.label}</p><h2 id="projects-title">{portfolio.projects.title}</h2></div>
-        <ProjectGrid items={featuredProjects} content={portfolio} showLatestExploration />
+        <ProjectGrid items={featuredProjects} content={portfolio} showExtensionRecord />
         <div class="projects-footer"><a class="pill outline-pill projects-all" href={worksHref}>{portfolio.projects.allAction} <span aria-hidden="true">→</span></a><p class="section-afterword">{portfolio.projects.intro}</p></div>
       </div>
     </section>

@@ -3,57 +3,63 @@ import type { PortfolioContent } from '../data/portfolio';
 interface Props {
   items: PortfolioContent['projects']['items'];
   content: PortfolioContent;
-  showLatestExploration?: boolean;
+  showExtensionRecord?: boolean;
 }
-const { items, content, showLatestExploration = false } = Astro.props;
+const { items, content, showExtensionRecord = false } = Astro.props;
 const assetVersion = import.meta.env.PUBLIC_ASSET_VERSION || 'local';
 const imageUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}?v=${assetVersion}`;
 const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
 ---
 <div class="project-grid">
   {items.map((item, i) => {
-    const latest = showLatestExploration ? item.latestExploration : undefined;
+    const extension = showExtensionRecord ? item.extensionRecord : undefined;
     const dialogId = `project-video-${i + 1}`;
-    const orientationHint = latest?.orientation ? ` is-${latest.orientation}` : '';
-    const dialogStyle = latest?.aspectRatio ? `--video-aspect-ratio:${latest.aspectRatio}` : undefined;
+    const vlog = extension?.type === 'vlog' ? extension : undefined;
+    const orientationHint = vlog?.orientation ? ` is-${vlog.orientation}` : '';
+    const dialogStyle = vlog?.aspectRatio ? `--video-aspect-ratio:${vlog.aspectRatio}` : undefined;
 
-    return <article class={`project-card project-${i + 1}${latest ? ' has-latest' : ''}`}>
+    return <article class={`project-card project-${i + 1}${extension ? ' has-extension' : ''}`}>
       <div class="project-image">
         <img src={imageUrl(item.image.src)} alt={item.image.alt} width="1024" height="768" loading="lazy" decoding="async" />
-        <span>{String(i + 1).padStart(2, '0')}</span>
+        <span class={item.icon ? 'project-marker-icon' : undefined} aria-hidden="true">{item.icon === 'compass' ? '⌖' : String(i + 1).padStart(2, '0')}</span>
       </div>
       <div class="project-body">
         <div class="project-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div>
         <div class="project-title-row">
           <h3>{item.title}</h3>
-          {latest && item.status && <span class="project-status">{item.status}</span>}
+          {extension && item.status && <span class="project-status">{item.status}</span>}
         </div>
+        {item.subtitle && <p class="project-subtitle">{item.subtitle}</p>}
         <p>{item.description}</p>
         <dl class="project-details">
-          <div><dt>{content.ui.role}</dt><dd>{item.role}</dd></div>
+          {!showExtensionRecord && <div><dt>{content.ui.role}</dt><dd>{item.role}</dd></div>}
           <div><dt>{content.ui.takeaway}</dt><dd>{item.insight}</dd></div>
         </dl>
-        {latest && <div class="project-latest">
-          <p class="project-latest-label">{latest.label}</p>
-          <div class="project-latest-summary">
+        {extension && <div class="project-extension">
+          <p class="project-extension-label">{extension.label}</p>
+          <div class="project-extension-summary">
             <div>
-              <time datetime={latest.date.replace('.', '-')}>{latest.date}</time>
-              <h4>{latest.title}</h4>
+              {extension.type === 'vlog'
+                ? <><time datetime={extension.date.replace('.', '-')}>{extension.date}</time><h4>{extension.title}</h4></>
+                : <h4>{extension.platform} {extension.statusText}</h4>}
             </div>
-            {latest.videoUrl && <button type="button" data-video-open={dialogId} aria-label={`${latest.videoAction}：${latest.title}`}>{latest.videoAction} <span aria-hidden="true">→</span></button>}
+            {extension.type === 'vlog' && extension.status === 'published' && extension.mediaUrl && <button class="project-extension-action" type="button" data-video-open={dialogId} aria-label={`${extension.ctaLabel}：${extension.title}`}>{extension.ctaLabel} <span aria-hidden="true">→</span></button>}
+            {extension.type === 'vlog' && extension.status === 'in-progress' && <span class="project-extension-pending">{extension.ctaLabel}</span>}
+            {extension.type === 'social' && <a class="project-extension-action" href={extension.href} target="_blank" rel="noopener noreferrer" aria-label={extension.externalLabel}>{extension.ctaLabel} <span aria-hidden="true">↗</span></a>}
           </div>
+          {extension.type === 'vlog' && extension.meta && <p class="project-extension-meta">{extension.meta}</p>}
         </div>}
-        {item.link && <a href={item.link} target="_blank" rel="noreferrer">{content.ui.learnMore} ↗</a>}
+        {!extension && item.link && <a href={item.link} target="_blank" rel="noreferrer">{content.ui.learnMore} ↗</a>}
       </div>
-      {latest?.videoUrl && <dialog class={`video-dialog is-loading${orientationHint}`} id={dialogId} data-video-dialog data-orientation-hint={latest.orientation} style={dialogStyle} role="dialog" aria-modal="true" aria-labelledby={`${dialogId}-title`} tabindex="-1">
+      {vlog?.status === 'published' && vlog.mediaUrl && <dialog class={`video-dialog is-loading${orientationHint}`} id={dialogId} data-video-dialog data-orientation-hint={vlog.orientation} style={dialogStyle} role="dialog" aria-modal="true" aria-labelledby={`${dialogId}-title`} tabindex="-1">
         <div class="video-dialog-panel">
           <div class="video-dialog-header">
-            <div><span>{latest.date}</span><h3 id={`${dialogId}-title`}>{latest.title}</h3></div>
-            <button type="button" data-video-close aria-label={latest.closeAction}>×</button>
+            <div><span>{vlog.date}</span><h3 id={`${dialogId}-title`}>{vlog.title}</h3></div>
+            <button type="button" data-video-close aria-label={vlog.closeAction}>×</button>
           </div>
           <div class="video-stage">
-            <p class="video-loading" role="status" aria-live="polite">{latest.loadingLabel}</p>
-            <video controls playsinline preload="metadata" data-src={publicUrl(latest.videoUrl)} poster={latest.posterUrl ? imageUrl(latest.posterUrl) : undefined} tabindex="-1"></video>
+            <p class="video-loading" role="status" aria-live="polite">{vlog.loadingLabel}</p>
+            <video controls playsinline preload="metadata" data-src={publicUrl(vlog.mediaUrl)} poster={vlog.posterUrl ? imageUrl(vlog.posterUrl) : undefined} tabindex="-1"></video>
           </div>
         </div>
       </dialog>}
