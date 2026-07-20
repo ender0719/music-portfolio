@@ -65,3 +65,19 @@ p,dd,blockquote{text-wrap:pretty}
 @keyframes video-dialog-in{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
 @media(max-width:680px){.video-dialog,.video-dialog.is-portrait,.video-dialog.is-square,.video-dialog.is-landscape{width:calc(100vw - 20px);max-height:calc(100dvh - 20px);--video-max-height:calc(100dvh - 116px)}.video-dialog-panel{padding:calc(12px + env(safe-area-inset-top,0px)) calc(12px + env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) calc(12px + env(safe-area-inset-left,0px))}.video-dialog.is-loading .video-stage{min-height:min(52dvh,420px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-image,.hero-copy,.hero-highlights,.video-dialog{animation:none}.pill,.service-card,.about-photo img,.community-gallery img,.contact-card,.project-latest-summary button,.video-dialog,.video-dialog video{transition:none}}
+
+/* Responsive reading type: preserve desktop density and improve narrow-screen copy. */
+@media(max-width:1023px){
+  :root{--font-size-reading:.9375rem;--font-size-card-copy:.9375rem;--line-height-reading:1.72;--line-height-card-copy:1.7}
+  .about-copy>p:not(.section-tag),.about-story,.section-intro,.section-heading-row>p,.currently-layout>div:first-child>p:not(.section-tag),.section-afterword,.process-note,.contact-encouragement,.contact-afterword p,.works-hero>div>p:not(.section-tag),.vision-copy>p:not(.section-tag){line-height:var(--line-height-reading)}
+  .entry-card p,.value-card p,.about-values p,.about-timeline p,.currently-list p,.service-card p,.project-body>p,.project-details dd,.outcome-card p,.process-grid .process-list p,.journal-body p{font-size:var(--font-size-card-copy);line-height:var(--line-height-card-copy)}
+}
+
+@media(max-width:767px){
+  :root{--font-size-reading:1rem;--font-size-card-copy:.9375rem;--line-height-reading:1.75;--line-height-card-copy:1.72}
+  .about-copy>p:not(.section-tag),.section-intro,.section-heading-row>p,.currently-layout>div:first-child>p:not(.section-tag),.section-afterword,.process-note,.contact-encouragement,.contact-afterword p,.works-hero>div>p:not(.section-tag),.vision-copy>p:not(.section-tag){font-size:var(--font-size-reading);line-height:var(--line-height-reading);overflow-wrap:break-word;word-break:normal}
+  .about-story{font-size:var(--font-size-card-copy);line-height:var(--line-height-reading)}
+  .entry-card p,.value-card p,.about-values p,.about-timeline p,.currently-list p,.service-card p,.project-body>p,.project-details dd,.outcome-card p,.process-grid .process-list p,.journal-body p{font-size:var(--font-size-card-copy);line-height:var(--line-height-card-copy);overflow-wrap:break-word;word-break:normal}
+  .about-copy>p:not(.section-tag)+p:not(.section-tag){margin-top:14px}
+  .entry-card h3+p,.value-card h3+p,.currently-list h3+p,.service-card h3+p,.outcome-card h3+p,.journal-body h3+p{margin-top:9px}
+}
