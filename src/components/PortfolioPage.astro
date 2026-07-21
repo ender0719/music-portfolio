@@ -41,7 +41,7 @@ const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
         <div class="section-heading-simple"><p class="section-tag">{portfolio.startHere.label}</p><h2 id="start-title">{portfolio.startHere.title}</h2></div>
         <div class="entry-grid">
           {portfolio.startHere.items.map((item) => <article class="entry-card">
-            <span class="entry-number" aria-hidden="true">{item.number}</span><h3>{item.title}</h3><p>{item.description}</p><a href={item.action.href}>{item.action.label}<span aria-hidden="true"> →</span></a>
+            <span class="entry-number" aria-hidden="true">{item.number}</span><h3>{item.title}</h3><p>{item.description}</p><a href={item.action.href} aria-label={item.action.label}><span class="entry-action-label">{item.action.label}</span><span aria-hidden="true"> →</span></a>
           </article>)}
         </div>
         <p class="section-afterword">{portfolio.startHere.intro}</p>
@@ -55,16 +55,24 @@ const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
           <p class="section-tag">{portfolio.about.label}</p>
           <h2 id="about-title">{portfolio.about.title}</h2>
           {portfolio.about.paragraphs.map((text) => <p>{text}</p>)}
-          <blockquote class="about-story">{portfolio.about.story}</blockquote>
+          <blockquote class="about-story about-story-desktop">{portfolio.about.story}</blockquote>
           <a class="pill outline-pill" href="#portfolio">{portfolio.ui.learnStory} <span aria-hidden="true">→</span></a>
         </div>
         <ul class="about-points" aria-label="Focus areas">
           {portfolio.about.facts.map((item, i) => <li><span class="line-icon" aria-hidden="true">{['♩','♧','◎'][i]}</span><div><h3>{item.value}</h3><p>{item.label}</p></div></li>)}
         </ul>
-        <div class="about-values">
+        <div class="about-values about-extra-desktop">
           {portfolio.values.items.map((item) => <article><h3>{item.title}</h3><p>{item.description}</p></article>)}
         </div>
-        <ol class="about-timeline">{portfolio.about.timeline.map((item) => <li><span>{item.label}</span><h3>{item.title}</h3><p>{item.description}</p></li>)}</ol>
+        <ol class="about-timeline about-extra-desktop">{portfolio.about.timeline.map((item) => <li><span>{item.label}</span><h3>{item.title}</h3><p>{item.description}</p></li>)}</ol>
+        <details class="about-more">
+          <summary>{portfolio.ui.readMoreStory}<span aria-hidden="true">＋</span></summary>
+          <blockquote class="about-story">{portfolio.about.story}</blockquote>
+          <div class="about-values">
+            {portfolio.values.items.map((item) => <article><h3>{item.title}</h3><p>{item.description}</p></article>)}
+          </div>
+          <ol class="about-timeline">{portfolio.about.timeline.map((item) => <li><span>{item.label}</span><h3>{item.title}</h3><p>{item.description}</p></li>)}</ol>
+        </details>
       </div>
     </section>
 
@@ -108,7 +116,7 @@ const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
       </div>
     </section>
 
-    {portfolio.journal.enabled && <section class="journal-preview section tinted" aria-labelledby="journal-title"><div class="shell"><div class="section-heading-simple"><p class="section-tag">{portfolio.journal.label}</p><h2 id="journal-title">{portfolio.journal.title}</h2></div><div class="journal-grid">{portfolio.journal.items.map((item) => <article><div class="journal-image"><img src={imageUrl(item.image.src)} alt={item.image.alt} width="900" height="600" loading="lazy" decoding="async" /></div><div class="journal-body"><div><span>{item.category}</span><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.excerpt}</p></div></article>)}</div></div></section>}
+    {portfolio.journal.enabled && <section class="journal-preview section tinted" aria-labelledby="journal-title"><div class="shell"><div class="section-heading-simple"><p class="section-tag">{portfolio.journal.label}</p><h2 id="journal-title">{portfolio.journal.title}</h2></div><div class="journal-grid">{portfolio.journal.items.map((item, index) => <article class={index === 2 ? 'journal-third-desktop' : undefined}><div class="journal-image"><img src={imageUrl(item.image.src)} alt={item.image.alt} width="900" height="600" loading="lazy" decoding="async" /></div><div class="journal-body"><div><span>{item.category}</span><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.excerpt}</p></div></article>)}</div>{portfolio.journal.items[2] && <details class="journal-more"><summary>{portfolio.ui.viewMoreJournal}<span aria-hidden="true">＋</span></summary><article><div class="journal-image"><img src={imageUrl(portfolio.journal.items[2].image.src)} alt={portfolio.journal.items[2].image.alt} width="900" height="600" loading="lazy" decoding="async" /></div><div class="journal-body"><div><span>{portfolio.journal.items[2].category}</span><time>{portfolio.journal.items[2].date}</time></div><h3>{portfolio.journal.items[2].title}</h3><p>{portfolio.journal.items[2].excerpt}</p></div></article></details>}</div></section>}
 
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div class="contact-visual"><img src={imageUrl(portfolio.contact.image.src)} alt={portfolio.contact.image.alt} width="1829" height="864" loading="lazy" decoding="async" /></div>

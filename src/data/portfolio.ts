@@ -74,7 +74,7 @@ export interface PortfolioContent {
   testimonials: { label: string; title: string; items: readonly { role: string; quote: string }[] };
   process: { label: string; title: string; note: string; image: ImageAsset; items: readonly { title: string; description: string }[] };
   footer: { name: string; tagline: string; quote: string; lastUpdated: string };
-  ui: { menu: string; navigationLabel: string; backToTop: string; contact: string; learnStory: string; learnMore: string; viewActivities: string; suitableFor: string; role: string; takeaway: string; letsConnect: string; message: string; messageDescription: string; follow: string; followDescription: string; collaborate: string; collaborateDescription: string; skipToContent: string; language: string };
+  ui: { menu: string; navigationLabel: string; backToTop: string; contact: string; learnStory: string; learnMore: string; readMoreStory: string; readTakeaway: string; viewMoreJournal: string; viewActivities: string; suitableFor: string; role: string; takeaway: string; letsConnect: string; message: string; messageDescription: string; follow: string; followDescription: string; collaborate: string; collaborateDescription: string; skipToContent: string; language: string };
 }
 
 export const portfolio = {
