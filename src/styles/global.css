@@ -134,3 +134,27 @@ p,dd,blockquote{text-wrap:pretty}
 .archive-card,.archive-card.has-extension{height:100%}
 .archive-card .project-body,.archive-card.has-extension .project-body{height:100%}
 .archive-card .project-extension{margin-top:auto}
+
+/* Desktop reading scale: improve copy legibility without changing headings or controls. */
+@media(min-width:1024px){
+  :root{--text-body:.9375rem;--text-body-lg:1.0375rem;--text-card:.925rem;--text-project:.9375rem;--text-meta:.78125rem;--text-tag:.625rem;--leading-body:1.7;--leading-card:1.66}
+  .site-nav{font-size:.875rem;font-weight:500}
+  .hero-copy>p:not(.kicker){max-width:445px;font-size:var(--text-body-lg);line-height:var(--leading-body)}
+  .about-copy>p:not(.section-tag),.about-story,.section-intro,.section-heading-row>p,.currently-layout>div:first-child>p:not(.section-tag),.section-afterword,.process-note,.contact-encouragement,.contact-afterword p,.works-hero>div>p:not(.section-tag),.vision-copy>p:not(.section-tag){font-size:var(--text-body);line-height:var(--leading-body)}
+  .section-intro{max-width:610px}
+  .entry-card p,.value-card p,.about-points p,.about-values p,.about-timeline p,.currently-list p,.service-card p,.outcome-card p,.process-grid .process-list p,.journal-body p{font-size:var(--text-card);line-height:var(--leading-card)}
+  .project-body>p{font-size:var(--text-project);line-height:var(--leading-card)}
+  .project-details dd,.archive-card .project-details dd{font-size:.9375rem;line-height:1.62}
+  .project-tags span{font-size:var(--text-tag);white-space:nowrap}
+  .project-subtitle{font-size:.75rem!important;line-height:1.5!important;white-space:nowrap}
+  .journal-body>div,.about-timeline span{font-size:.75rem;line-height:1.5}
+}
+
+/* Keep Japanese display copy on natural phrase boundaries. */
+:lang(ja) .hero h1,:lang(ja) .about-copy h2{word-break:normal;word-break:auto-phrase;line-break:strict;overflow-wrap:normal;text-wrap:balance}
+.about-copy .heading-phrase{display:inline-block;white-space:nowrap}
+@media(min-width:1101px){.about-grid{grid-template-columns:320px minmax(0,1fr) 270px;gap:36px}.about-photo{height:390px}}
+@media(min-width:901px) and (max-width:1100px){:lang(ja) .about-grid,:lang(zh) .about-grid{grid-template-columns:260px minmax(280px,1fr) 215px;gap:22px;padding:24px}:lang(ja) .about-photo,:lang(zh) .about-photo{height:370px}}
+
+/* Give desktop featured stories enough reading width after the type refinement. */
+@media(min-width:1024px){#portfolio .project-card{grid-template-columns:36% minmax(0,1fr)}#portfolio .project-body{padding:20px 22px 21px}#portfolio .project-title-row{margin-top:9px}#portfolio .project-details{margin-top:7px}#portfolio .project-extension{margin-top:10px}}

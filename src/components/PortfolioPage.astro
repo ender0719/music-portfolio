@@ -13,6 +13,10 @@ const featuredProjects = [5, 3, 4, 0]
   .filter(Boolean)
   .map((item) => item.homepageFeature ? { ...item, ...item.homepageFeature } : item);
 const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
+const aboutTitleDelimiter = lang === 'ja' ? '、' : '，';
+const aboutTitlePhrases = portfolio.about.title
+  .split(aboutTitleDelimiter)
+  .map((phrase, index, phrases) => `${phrase}${index < phrases.length - 1 ? aboutTitleDelimiter : ''}`);
 ---
 <BaseLayout title={portfolio.meta.title} description={portfolio.meta.description} lang={lang === 'zh' ? 'zh-Hant' : 'ja'} skipLabel={portfolio.ui.skipToContent}>
   <Header content={portfolio} lang={lang} />
@@ -53,7 +57,7 @@ const worksHref = `${import.meta.env.BASE_URL}${lang}/works/`;
         <figure class="about-photo"><img src={imageUrl(portfolio.about.image.src)} alt={portfolio.about.image.alt} width="900" height="1100" loading="lazy" decoding="async" /></figure>
         <div class="about-copy">
           <p class="section-tag">{portfolio.about.label}</p>
-          <h2 id="about-title">{portfolio.about.title}</h2>
+          <h2 id="about-title">{aboutTitlePhrases.map((phrase, index) => <><span class="heading-phrase">{phrase}</span>{index < aboutTitlePhrases.length - 1 && <wbr />}</>)}</h2>
           {portfolio.about.paragraphs.map((text) => <p>{text}</p>)}
           <blockquote class="about-story about-story-desktop">{portfolio.about.story}</blockquote>
           <a class="pill outline-pill" href="#portfolio">{portfolio.ui.learnStory} <span aria-hidden="true">→</span></a>
