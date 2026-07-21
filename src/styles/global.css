@@ -152,12 +152,13 @@ p,dd,blockquote{text-wrap:pretty}
 
 /* Keep Japanese display copy on natural phrase boundaries. */
 :lang(ja) .hero h1,:lang(ja) .about-copy h2{word-break:normal;word-break:auto-phrase;line-break:strict;overflow-wrap:normal;text-wrap:balance}
+:lang(ja) .project-title-row h3{word-break:normal;word-break:auto-phrase;line-break:strict;overflow-wrap:normal;text-wrap:balance}
 .about-copy .heading-phrase{display:inline-block;white-space:nowrap}
 @media(min-width:1101px){.about-grid{grid-template-columns:320px minmax(0,1fr) 270px;gap:36px}.about-photo{height:390px}}
 @media(min-width:901px) and (max-width:1100px){:lang(ja) .about-grid,:lang(zh) .about-grid{grid-template-columns:260px minmax(280px,1fr) 215px;gap:22px;padding:24px}:lang(ja) .about-photo,:lang(zh) .about-photo{height:370px}}
 
 /* Give desktop featured stories enough reading width after the type refinement. */
-@media(min-width:1024px){#portfolio .project-card{grid-template-columns:36% minmax(0,1fr)}#portfolio .project-body{padding:20px 22px 21px}#portfolio .project-title-row{margin-top:9px}#portfolio .project-details{margin-top:7px}#portfolio .project-extension{margin-top:10px}}
+@media(min-width:1024px){#portfolio .project-card{grid-template-columns:36% minmax(0,1fr)}#portfolio .project-body{padding:20px 22px 21px}#portfolio .project-title-row{margin-top:9px}#portfolio .project-details{margin-top:7px}#portfolio .has-extension .project-extension{margin-top:auto;padding-top:10px}}
 
 /* Separate the archive action from its supporting copy on small screens. */
 @media(max-width:680px){.projects-footer{display:grid;gap:16px;margin-top:24px}.projects-footer .projects-all{justify-self:start;margin:0;white-space:nowrap}.projects-footer .section-afterword{max-width:none;margin:0;padding-top:14px;border-top:1px solid rgba(104,119,135,.2);text-align:left}}
