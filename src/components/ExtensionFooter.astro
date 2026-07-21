@@ -1,0 +1,35 @@
+---
+import type { ExtensionRecord } from '../data/portfolio';
+
+interface Props {
+  record: ExtensionRecord;
+  dialogId: string;
+}
+
+const { record, dialogId } = Astro.props;
+const isPublishedVlog = record.type === 'vlog' && record.status === 'published' && Boolean(record.mediaUrl);
+---
+
+{isPublishedVlog && record.type === 'vlog' && <button class="extension-footer is-vlog" type="button" data-video-open={dialogId} aria-label={`${record.ctaLabel}：${record.title}`}>
+  <span class="extension-footer-label">{record.label}</span>
+  <strong class="extension-footer-title">{record.title}</strong>
+  <span class="extension-footer-row">
+    <span class="extension-footer-meta"><time datetime={record.date.replace('.', '-')}>{record.date}</time>{record.meta && <span aria-hidden="true"> · </span>}{record.meta && <span>{record.meta}</span>}</span>
+    <span class="extension-footer-cta">{record.ctaLabel}<span class="extension-footer-arrow" aria-hidden="true">→</span></span>
+  </span>
+</button>}
+
+{record.type === 'vlog' && !isPublishedVlog && <div class="extension-footer is-pending">
+  <span class="extension-footer-label">{record.label}</span>
+  <strong class="extension-footer-title">{record.title}</strong>
+  <span class="extension-footer-row">
+    <span class="extension-footer-meta"><time datetime={record.date.replace('.', '-')}>{record.date}</time>{record.meta && <span aria-hidden="true"> · </span>}{record.meta && <span>{record.meta}</span>}</span>
+    <span class="extension-footer-pending">{record.ctaLabel}</span>
+  </span>
+</div>}
+
+{record.type === 'social' && <a class="extension-footer is-social" href={record.href} target="_blank" rel="noopener noreferrer" aria-label={record.externalLabel}>
+  <span class="extension-footer-label">{record.label}</span>
+  <strong class="extension-footer-title">{record.platform} {record.statusText}</strong>
+  <span class="extension-footer-cta">{record.ctaLabel}<span class="extension-footer-arrow" aria-hidden="true">↗</span></span>
+</a>}

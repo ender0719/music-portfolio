@@ -103,3 +103,15 @@ p,dd,blockquote{text-wrap:pretty}
 }
 
 @media(prefers-reduced-motion:reduce){.project-extension-card,.project-extension-arrow,.about-more summary span,.journal-more summary span,.project-details-mobile summary span{transition:none}}
+
+/* Featured experience footer strips: lightweight, full-surface next steps. */
+.extension-footer{display:flex;flex-direction:column;width:100%;padding:14px 15px;border:1px solid rgba(126,153,175,.25);border-radius:10px;background:rgba(220,230,238,.28);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:transform 180ms ease-out,border-color 180ms ease-out,background-color 180ms ease-out,box-shadow 180ms ease-out,opacity 180ms ease-out}.extension-footer-label{display:block;margin-bottom:6px;color:#a87554;font-size:.75rem;font-weight:500;line-height:1.4}.extension-footer-title{display:block;color:var(--ink);font-family:Arial,'Noto Sans',sans-serif;font-size:.94rem;font-weight:600;line-height:1.45;overflow-wrap:break-word;word-break:normal}.extension-footer-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:3px 6px;margin-top:3px}.extension-footer-meta{color:#7b8893;font-size:.73rem;font-weight:400;line-height:1.5}.extension-footer-cta,.extension-footer-pending{display:inline-flex;align-items:center;gap:6px;color:#9e5c36;font-size:.82rem;font-weight:700;line-height:1.4;white-space:nowrap}.extension-footer-row .extension-footer-cta::before{content:'·';color:#8a969f;font-weight:400}.extension-footer.is-social .extension-footer-cta{margin-top:6px}.extension-footer-arrow{display:inline-block;font-size:.9em;transition:transform 180ms ease-out}.extension-footer:focus-visible{outline:2px solid var(--orange);outline-offset:2px}.extension-footer.is-pending{cursor:default;background:rgba(220,230,238,.18);color:#687787}.extension-footer.is-pending .extension-footer-label,.extension-footer.is-pending .extension-footer-pending{color:#71808e}.extension-footer-pending{margin-top:3px}
+
+.has-extension .project-details dt{color:#a87554;font-size:.68rem;font-weight:500}.has-extension .project-details dd{color:#647381}.extension-footer-meta span:last-child{color:#7b8893;font-weight:400}
+
+@media(hover:hover) and (pointer:fine){.extension-footer:not(.is-pending):hover{transform:translateY(-1px);border-color:rgba(189,117,73,.44);background:rgba(220,230,238,.46);box-shadow:0 4px 12px rgba(18,45,67,.055)}.extension-footer.is-vlog:hover .extension-footer-arrow{transform:translateX(3px)}.extension-footer.is-social:hover .extension-footer-arrow{transform:translate(2px,-2px)}}
+
+.extension-footer:not(.is-pending):active{transform:translateY(0);opacity:.97;background:rgba(220,230,238,.52)}.extension-footer.is-pending:active{opacity:1}
+
+@media(max-width:680px){.extension-footer{padding:14px 15px}.extension-footer-title{font-size:.94rem}.extension-footer-row{align-items:flex-start}.extension-footer-meta{flex-basis:100%}.extension-footer-row .extension-footer-cta::before{display:none}.extension-footer-cta{font-size:.84rem}.extension-footer.is-social .extension-footer-cta{margin-top:6px}}
+@media(prefers-reduced-motion:reduce){.extension-footer,.extension-footer-arrow{transition:none}}

@@ -1,5 +1,6 @@
 ---
 import type { PortfolioContent } from '../data/portfolio';
+import ExtensionFooter from './ExtensionFooter.astro';
 interface Props {
   items: PortfolioContent['projects']['items'];
   content: PortfolioContent;
@@ -21,7 +22,7 @@ const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
     return <article class={`project-card project-${i + 1}${extension ? ' has-extension' : ''}`}>
       <div class="project-image">
         <img src={imageUrl(item.image.src)} alt={item.image.alt} width="1024" height="768" loading="lazy" decoding="async" />
-        <span class={item.icon ? 'project-marker-icon' : undefined} aria-hidden="true">{item.icon === 'compass' ? '⌖' : String(i + 1).padStart(2, '0')}</span>
+        <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
       </div>
       <div class="project-body">
         <div class="project-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div>
@@ -39,20 +40,7 @@ const publicUrl = (src: string) => `${import.meta.env.BASE_URL}${src.slice(1)}`;
           <dl class="project-details project-details-desktop"><div><dt>{content.ui.takeaway}</dt><dd>{item.insight}</dd></div></dl>
           <details class="project-details-mobile"><summary>{content.ui.readTakeaway}<span aria-hidden="true">＋</span></summary><dl class="project-details"><div><dt>{content.ui.takeaway}</dt><dd>{item.insight}</dd></div></dl></details>
           <div class="project-extension">
-            {extension.type === 'vlog' && extension.status === 'published' && extension.mediaUrl && <button class="project-extension-card" type="button" data-video-open={dialogId} aria-label={`${extension.ctaLabel}：${extension.title}`}>
-              <span class="project-extension-label">{extension.label}</span>
-              <span class="project-extension-content"><span class="project-extension-summary"><time datetime={extension.date.replace('.', '-')}>{extension.date}</time><strong>{extension.title}</strong></span><span class="project-extension-action">{extension.ctaLabel} <span class="project-extension-arrow" aria-hidden="true">→</span></span></span>
-              {extension.meta && <span class="project-extension-meta">{extension.meta}</span>}
-            </button>}
-            {extension.type === 'vlog' && extension.status === 'in-progress' && <div class="project-extension-card is-pending">
-              <span class="project-extension-label">{extension.label}</span>
-              <span class="project-extension-content"><span class="project-extension-summary"><time datetime={extension.date.replace('.', '-')}>{extension.date}</time><strong>{extension.title}</strong></span><span class="project-extension-pending">{extension.ctaLabel}</span></span>
-              {extension.meta && <span class="project-extension-meta">{extension.meta}</span>}
-            </div>}
-            {extension.type === 'social' && <a class="project-extension-card" href={extension.href} target="_blank" rel="noopener noreferrer" aria-label={extension.externalLabel}>
-              <span class="project-extension-label">{extension.label}</span>
-              <span class="project-extension-content"><strong class="project-extension-summary">{extension.platform} {extension.statusText}</strong><span class="project-extension-action">{extension.ctaLabel} <span class="project-extension-arrow" aria-hidden="true">↗</span></span></span>
-            </a>}
+            <ExtensionFooter record={extension} dialogId={dialogId} />
           </div>
         </>}
         {!extension && item.link && <a href={item.link} target="_blank" rel="noreferrer">{content.ui.learnMore} ↗</a>}
